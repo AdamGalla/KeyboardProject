@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  keyboardapi:
+    image: ${DOCKER_REGISTRY-}keyboardapi
+    build:
+      context: .
+      dockerfile: KeyboardAPI/Dockerfile
+
+  userapi:
+    image: ${DOCKER_REGISTRY-}userapi
+    build:
+      context: .
+      dockerfile: UserAPI/Dockerfile
+
