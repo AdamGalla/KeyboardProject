@@ -3,45 +3,45 @@ using KeyboardAPI.Models;
 
 namespace KeyboardAPI.Data;
 
-public class CustomerRepository : IRepository<Customer>
+public class KeyboardRepository : IRepository<Keyboard>
 {
 
-    private readonly CustomerApiContext db;
+    private readonly KeyboardApiContext db;
 
-    public CustomerRepository(CustomerApiContext context)
+    public KeyboardRepository(KeyboardApiContext context)
     {
         db = context;
     }
 
-    Customer IRepository<Customer>.Add(Customer entity)
+    Keyboard IRepository<Keyboard>.Add(Keyboard entity)
     {
-        var newCustomer = db.Customers.Add(entity).Entity;
+        var newKeyboard = db.Keyboards.Add(entity).Entity;
         db.SaveChanges();
-        return newCustomer;
+        return newKeyboard;
     }
 
-    void IRepository<Customer>.Edit(Customer entity)
+    void IRepository<Keyboard>.Edit(Keyboard entity)
     {
         db.Entry(entity).State = EntityState.Modified;
         db.SaveChanges();
     }
 
-    Customer IRepository<Customer>.Get(int id)
+    Keyboard IRepository<Keyboard>.Get(int id)
     {
-        return db.Customers.FirstOrDefault(p => p.Id == id)!;
+        return db.Keyboards.FirstOrDefault(p => p.Id == id)!;
     }
 
-    IEnumerable<Customer> IRepository<Customer>.GetAll()
+    IEnumerable<Keyboard> IRepository<Keyboard>.GetAll()
     {
-        return db.Customers.ToList();
+        return db.Keyboards.ToList();
     }
 
-    void IRepository<Customer>.Remove(int id)
+    void IRepository<Keyboard>.Remove(int id)
     {
-        var customer = db.Customers.FirstOrDefault(p => p.Id == id);
-        if (customer != null)
+        var Keyboard = db.Keyboards.FirstOrDefault(p => p.Id == id);
+        if (Keyboard != null)
         {
-            db.Customers.Remove(customer);
+            db.Keyboards.Remove(Keyboard);
             db.SaveChanges();
         }
     }
