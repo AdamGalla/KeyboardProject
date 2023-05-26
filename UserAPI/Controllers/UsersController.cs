@@ -1,43 +1,56 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using UserAPI.Data;
+using UserAPI.Models;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+namespace UserAPI.Controllers;
 
-namespace UserAPI.Controllers
+[Route("api/[controller]")]
+[ApiController]
+public class UsersController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class UsersController : ControllerBase
+    private readonly IRepository<User> _userRepository;
+
+    public UsersController(IRepository<User> userRepository)
     {
-        // GET: api/<KeyboardsController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        _userRepository = userRepository;
+    }
 
-        // GET api/<KeyboardsController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
+    // GET: api/<UsersController>
+    [HttpGet]
+    public ActionResult<IEnumerable<User>> Get()
+    {
+        return Ok(_userRepository.GetAll());
+    }
 
-        // POST api/<KeyboardsController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
+    // GET api/<UsersController>/5
+    [HttpGet("{id}")]
+    public ActionResult<User> Get(int id)
+    {
+        return Ok(_userRepository.Get(id));
+    }
 
-        // PUT api/<KeyboardsController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+    // POST api/<UsersController>
+    [HttpPost]
+    public ActionResult Post([FromBody] User user)
+    {
+        _userRepository.Add(user);
+        return Ok();
+    }
 
-        // DELETE api/<KeyboardsController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+    // PUT api/<UsersController>/5
+    [HttpPut("{id}")]
+    public ActionResult Put(int id, [FromBody] User user)
+    {
+        user.Id = id;
+        _userRepository.Edit(user);
+        return Ok();
+    }
+
+    // DELETE api/<UsersController>/5
+    [HttpDelete("{id}")]
+    public ActionResult Delete(int id)
+    {
+        _userRepository.Remove(id);
+        return Ok();
     }
 }
