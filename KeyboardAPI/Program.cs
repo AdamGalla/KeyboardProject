@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<KeyboardApiContext>(opt => opt.UseInMemoryDatabase("KeyboardsSd"));
+builder.Services.AddDbContext<KeyboardApiContext>(opt => opt.UseInMemoryDatabase("KeyboardsDd"));
 // Register repositories for dependency injection
 builder.Services.AddScoped<IRepository<Keyboard>, KeyboardRepository>();
 // Register database initializer for dependency injection
