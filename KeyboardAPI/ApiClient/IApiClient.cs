@@ -1,9 +1,8 @@
 ﻿using KeyboardAPI.DTOs;
 
-namespace KeyboardAPI.ApiClient
+namespace KeyboardAPI.ApiClient;
+
+public interface IApiClient
 {
-    public interface IApiClient
-    {
-        public Task<UserDTO> GetUserById(string id);
-    }
+    public Task<UserDTO> GetUserById(string id);
 }
