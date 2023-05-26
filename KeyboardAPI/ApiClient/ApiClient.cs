@@ -6,7 +6,7 @@ namespace KeyboardAPI.ApiClient;
 
 public class ApiClient : IApiClient
 {
-    public async Task<UserDTO> GetUserById(string id)
+    public async Task<UserDTO> GetUserById(int id)
     {
         //url needs to be changed when specified in docker orchestration
         var client = new RestClient("http://localhost:9000/api");

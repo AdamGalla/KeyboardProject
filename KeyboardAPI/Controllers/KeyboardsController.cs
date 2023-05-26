@@ -1,4 +1,5 @@
-﻿using KeyboardAPI.Data;
+﻿using KeyboardAPI.ApiClient;
+using KeyboardAPI.Data;
 using KeyboardAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,10 +12,12 @@ namespace KeyboardAPI.Controllers;
 public class KeyboardsController : ControllerBase
 {
     private readonly IRepository<Keyboard> _repository;
+    private readonly IApiClient _apiClient;
 
-    public KeyboardsController(IRepository<Keyboard> repository)
+    public KeyboardsController(IRepository<Keyboard> repository, IApiClient apiClient)
     {
         _repository = repository;
+        _apiClient = apiClient;
     }
     // GET: api/<KeyboardsController>
     [HttpGet]
@@ -43,10 +46,10 @@ public class KeyboardsController : ControllerBase
     }
 
     // PUT api/<KeyboardsController>/5
-    [HttpPut("{id}")]
+    [HttpPut("keyboard/{keyboardId}/user/{userId}")]
     public IActionResult ReserveKeyboard(int keyboardId, int userId)
     {
-        var user = _repository.Get(keyboardId);
+        var user = _apiClient.GetUserById(userId);
         var reservedKeyboard = _repository.Get(keyboardId);
 
         if (reservedKeyboard == null)
