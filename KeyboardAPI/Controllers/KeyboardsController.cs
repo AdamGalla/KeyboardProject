@@ -46,7 +46,7 @@ public class KeyboardsController : ControllerBase
     }
 
     // PUT api/<KeyboardsController>/5
-    [HttpPut("keyboard/{keyboardId}/user/{userId}")]
+    [HttpPut("{keyboardId}/user/{userId}")]
     public IActionResult ReserveKeyboard(int keyboardId, int userId)
     {
         var user = _apiClient.GetUserById(userId);
