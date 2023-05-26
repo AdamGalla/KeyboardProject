@@ -50,6 +50,12 @@ public class KeyboardsController : ControllerBase
     public IActionResult ReserveKeyboard(int keyboardId, int userId)
     {
         var user = _apiClient.GetUserById(userId);
+
+        if (user == null)
+        {
+            return NotFound();
+        }
+
         var reservedKeyboard = _repository.Get(keyboardId);
 
         if (reservedKeyboard == null)
