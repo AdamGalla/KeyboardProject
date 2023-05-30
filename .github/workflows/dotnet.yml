@@ -16,20 +16,20 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
-    - name: Restore dependencies
-      run: dotnet restore ./KeyboardProject.sln
 
   build:
     runs-on: ubuntu-latest
-    needs: setup # Reference the setup job
+    needs: setup
     steps:
+    - name: Restore dependencies
+      run: dotnet restore ./KeyboardProject.sln
     - uses: actions/checkout@v3
     - name: Build
       run: dotnet build ./KeyboardProject.sln --no-restore
 
   test:
     runs-on: ubuntu-latest
-    needs: setup # Reference the setup job
+    needs: build
     steps:
     - uses: actions/checkout@v3
     - name: Test
