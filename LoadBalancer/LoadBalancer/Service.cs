@@ -2,12 +2,12 @@
 
 public record Service
 {
-    public Guid Id { get; set; }
-    public string Url { get; set; }
+    public Guid Id { get; private set; }
+    public string Url { get; private set; }
 
     public Service(string url)
     {
-        Id = new Guid();
+        Id = Guid.NewGuid();
         Url = url;
     }
 }
