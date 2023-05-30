@@ -1,3 +1,4 @@
+using KeyboardAPI.ApiClient;
 using KeyboardAPI.Data;
 using KeyboardAPI.Models;
 using Microsoft.EntityFrameworkCore;
@@ -5,6 +6,9 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+//Register ApiClient for dependency injection
+builder.Services.AddScoped<IApiClient>(apiClient => new ApiClient());
+
 builder.Services.AddDbContext<KeyboardApiContext>(opt => opt.UseInMemoryDatabase("KeyboardsDd"));
 // Register repositories for dependency injection
 builder.Services.AddScoped<IRepository<Keyboard>, KeyboardRepository>();
