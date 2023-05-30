@@ -13,16 +13,34 @@ public class LoadBalancerController : ControllerBase
         _loadBalancer = loadBalancer;
     }
 
-    [Route("{serviceName}/{**path}")]
-    public async Task<IActionResult> RouteRequest(string serviceName)
+    [Route("{**path}")]
+    public async Task<IActionResult> RouteRequest()
     {
-        var service = _loadBalancer.GetNextService();
-        if (service is null)
+        do
         {
-            return NotFound();
-        }
+            var service = _loadBalancer.GetNextService();
+            if (service is null)
+            {
+                return NotFound();
+            }
 
-        var requestMessage = BuildRequestMessage(Request, service);
+            var response = await RerouteMessageRequest(Request, service);
+            if (response is null)
+            {
+                _ = _loadBalancer.RemoveService(service.Id);
+            }
+            else
+            {
+                return response;
+            }
+        } while (_loadBalancer.GetAllServices().Any());
+
+        return StatusCode(StatusCodes.Status500InternalServerError);
+    }
+
+    private async Task<IActionResult?> RerouteMessageRequest(HttpRequest request, Service service)
+    {
+        var requestMessage = BuildRequestMessage(request, service.Url);
 
         using var httpClient = new HttpClient();
 
@@ -31,23 +49,26 @@ public class LoadBalancerController : ControllerBase
         timer.Stop();
         service.AddLatestResponseTime(timer.ElapsedMilliseconds);
 
-        return await GetStatusCode(response);
+        return await GetActionResult(response);
     }
 
-    private async Task<IActionResult> GetStatusCode(HttpResponseMessage response)
+    private async Task<IActionResult?> GetActionResult(HttpResponseMessage response)
     {
         if (response.IsSuccessStatusCode)
         {
             var content = await response.Content.ReadAsStringAsync();
             return Content(content, response.Content.Headers.ContentType!.MediaType!);
         }
-
+        else if((int)response.StatusCode >= 500)
+        {
+            return null;
+        }
         return StatusCode((int)response.StatusCode);
     }
 
-    private static HttpRequestMessage BuildRequestMessage(HttpRequest request, Service service)
+    private static HttpRequestMessage BuildRequestMessage(HttpRequest request, string serviceUrl)
     {
-        var targetUrl = $"{service.Url}/{request.Path.Value}";
+        var targetUrl = $"{serviceUrl}/{request.Path.Value}";
         var requestMessage = new HttpRequestMessage(new HttpMethod(request.Method), targetUrl)
         {
             Content = new StreamContent(request.Body)
