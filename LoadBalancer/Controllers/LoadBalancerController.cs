@@ -69,7 +69,9 @@ public class LoadBalancerController : ControllerBase
 
     private static HttpRequestMessage BuildRequestMessage(HttpRequest request, string serviceUrl)
     {
-        var targetUrl = $"{serviceUrl}/{request.Path.Value}";
+        string path = request.Path.Value!.Replace("LoadBalancer/", string.Empty);
+        var targetUrl = $"http://{serviceUrl}{path}";
+        Console.WriteLine($"Built new target url: {targetUrl}");
         var requestMessage = new HttpRequestMessage(new HttpMethod(request.Method), targetUrl)
         {
             Content = new StreamContent(request.Body)
