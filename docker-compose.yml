@@ -6,10 +6,23 @@ services:
     build:
       context: .
       dockerfile: KeyboardAPI/Dockerfile
+    deploy:
+        replicas: 2
 
   userapi:
     image: ${DOCKER_REGISTRY-}userapi
     build:
       context: .
       dockerfile: UserAPI/Dockerfile
+    deploy:
+        replicas: 2
 
+  loadbalancer:
+    image: ${DOCKER_REGISTRY-}loadbalancer
+    build:
+      context: .
+      dockerfile: LoadBalancer/Dockerfile
+    deploy:
+        replicas: 2
+    ports:
+      - 9080-9081:80
