@@ -5,11 +5,13 @@ using UserAPI.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Register the service to the loadbalancer
 Console.WriteLine("Hostname: " + Environment.MachineName);
-var client = new RestClient("http://loadbalancer:9080");
-var request = new RestRequest("LoadBalancerServices/RegisterService", Method.Post).AddJsonBody(new { Url = Environment.MachineName });
-_ = await client.ExecuteAsync(request);
+var client = new RestClient("http://users-loadbalancer");
+var request = new RestRequest("api/LoadBalancerServices/RegisterService", Method.Post).AddJsonBody(new { Url = Environment.MachineName });
+var result = await client.ExecuteAsync(request);
+
+string error = result.ErrorMessage ?? "None";
+Console.WriteLine($"Posted registration: {result.IsSuccessful}; Errors: {error}");
 
 builder.Services.AddDbContext<UserApiContext>(opt => opt.UseInMemoryDatabase("UsersDb"));
 // Add services to the container.
