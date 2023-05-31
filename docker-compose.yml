@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   keyboardapi:
-    image: ${DOCKER_REGISTRY-}keyboardapi
+    image: adm14/keyboardapi:latest
     build:
       context: .
       dockerfile: KeyboardAPI/Dockerfile
@@ -12,7 +12,7 @@ services:
       - keyboards-loadbalancer
 
   userapi:
-    image: ${DOCKER_REGISTRY-}userapi
+    image: adm14/userapi:latest
     build:
       context: .
       dockerfile: UserAPI/Dockerfile
@@ -22,7 +22,7 @@ services:
       - users-loadbalancer
 
   users-loadbalancer:
-    image: ${DOCKER_REGISTRY-}loadbalancer
+    image: adm14/loadbalancer-dls:latest
     build:
       context: .
       dockerfile: LoadBalancer/Dockerfile
@@ -30,7 +30,7 @@ services:
       - 9080:80
 
   keyboards-loadbalancer:
-    image: ${DOCKER_REGISTRY-}loadbalancer
+    image: adm14/loadbalancer-dls:latest
     build:
       context: .
       dockerfile: LoadBalancer/Dockerfile
