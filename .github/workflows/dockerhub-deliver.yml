@@ -10,20 +10,18 @@ env:
   DOCKERHUB_PASSWORD : ${{ secrets.DOCKERHUB_PASSWORD }}
 
 jobs:
-  logIn:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Log in to Docker Hub
-      run: docker login -u $DOCERHUB_USERNAME -p $DOCKERHUB_PASSWORD
-
   deliver:
     runs-on: ubuntu-latest
-    needs: logIn
     steps:
     - name: Check out the repo
       uses: actions/checkout@v3
+
+    - name: Log in to Docker Hub
+      run: docker login -u $DOCERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+
     - name: Build Docker images
       run: docker-compose build
+      
     - name: Push Docker images
       run: docker-compose push
     
