@@ -42,8 +42,6 @@ using (var scope = app.Services.CreateScope())
     dbInitializer.Initialize(dbContext);
 }
 
-app.UseHttpsRedirection();
-
 app.UseAuthorization();
 
 app.MapControllers();
