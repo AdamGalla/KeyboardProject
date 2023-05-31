@@ -2,8 +2,18 @@ using KeyboardAPI.ApiClient;
 using KeyboardAPI.Data;
 using KeyboardAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using RestSharp;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Register the service to the loadbalancer
+Console.WriteLine("Hostname: " + Environment.MachineName);
+var client = new RestClient("http://keyboards-loadbalancer");
+var request = new RestRequest("api/LoadBalancerServices/RegisterService", Method.Post).AddJsonBody(new { Url = Environment.MachineName });
+var result = await client.ExecuteAsync(request);
+
+string error = result.ErrorMessage ?? "None";
+Console.WriteLine($"Posted registration: {result.IsSuccessful}; Errors: {error}");
 
 // Add services to the container.
 //Register ApiClient for dependency injection
@@ -30,7 +40,7 @@ app.UseCors(options =>
 });
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+//if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -44,8 +54,6 @@ using (var scope = app.Services.CreateScope())
     var dbInitializer = services.GetService<IDbInitializer>();
     dbInitializer.Initialize(dbContext);
 }
-
-app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

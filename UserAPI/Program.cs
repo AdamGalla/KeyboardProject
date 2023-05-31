@@ -1,8 +1,17 @@
 using Microsoft.EntityFrameworkCore;
+using RestSharp;
 using UserAPI.Data;
 using UserAPI.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+Console.WriteLine("Hostname: " + Environment.MachineName);
+var client = new RestClient("http://users-loadbalancer");
+var request = new RestRequest("api/LoadBalancerServices/RegisterService", Method.Post).AddJsonBody(new { Url = Environment.MachineName });
+var result = await client.ExecuteAsync(request);
+
+string error = result.ErrorMessage ?? "None";
+Console.WriteLine($"Posted registration: {result.IsSuccessful}; Errors: {error}");
 
 builder.Services.AddDbContext<UserApiContext>(opt => opt.UseInMemoryDatabase("UsersDb"));
 // Add services to the container.
@@ -32,8 +41,6 @@ using (var scope = app.Services.CreateScope())
     var dbInitializer = services.GetService<IDbInitializer>();
     dbInitializer.Initialize(dbContext);
 }
-
-app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

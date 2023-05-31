@@ -1,0 +1,26 @@
+name: dockerhub-deploy
+
+on:
+  push: 
+    branches: ["master"]
+  workflow_dispatch:
+
+env:
+  DOCERHUB_USERNAME : adm14
+  DOCKERHUB_PASSWORD : ${{ secrets.DOCKERHUB_PASSWORD }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out the repo
+      uses: actions/checkout@v3
+
+    - name: Log in to Docker Hub
+      run: docker login -u $DOCERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+
+    - name: Build and push Docker image
+      run: |
+        docker-compose build
+        docker-compose push
+    

@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserAPI", "UserAPI\UserAPI.csproj", "{85EF7F1E-F8CB-4EEA-83B0-30BB2B1D08E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserAPI", "UserAPI\UserAPI.csproj", "{85EF7F1E-F8CB-4EEA-83B0-30BB2B1D08E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyboardAPI", "KeyboardAPI\KeyboardAPI.csproj", "{A62537B0-1AB0-4543-9A07-1DC29715D1BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardAPI", "KeyboardAPI\KeyboardAPI.csproj", "{A62537B0-1AB0-4543-9A07-1DC29715D1BE}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{E4346BF5-43EE-48DD-81BC-235B58F9B2ED}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoadBalancer", "LoadBalancer\LoadBalancer.csproj", "{32321636-EB52-4508-81A7-983019FCA855}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{E4346BF5-43EE-48DD-81BC-235B58F9B2ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4346BF5-43EE-48DD-81BC-235B58F9B2ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4346BF5-43EE-48DD-81BC-235B58F9B2ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32321636-EB52-4508-81A7-983019FCA855}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32321636-EB52-4508-81A7-983019FCA855}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32321636-EB52-4508-81A7-983019FCA855}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32321636-EB52-4508-81A7-983019FCA855}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

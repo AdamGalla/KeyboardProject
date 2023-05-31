@@ -2,14 +2,37 @@ version: '3.4'
 
 services:
   keyboardapi:
-    image: ${DOCKER_REGISTRY-}keyboardapi
+    image: adm14/keyboardapi:latest
     build:
       context: .
       dockerfile: KeyboardAPI/Dockerfile
+    deploy:
+      replicas: 1
+    depends_on:
+      - keyboards-loadbalancer
 
   userapi:
-    image: ${DOCKER_REGISTRY-}userapi
+    image: adm14/userapi:latest
     build:
       context: .
       dockerfile: UserAPI/Dockerfile
+    deploy:
+      replicas: 1
+    depends_on:
+      - users-loadbalancer
 
+  users-loadbalancer:
+    image: adm14/loadbalancer-dls:latest
+    build:
+      context: .
+      dockerfile: LoadBalancer/Dockerfile
+    ports:
+      - 9080:80
+
+  keyboards-loadbalancer:
+    image: adm14/loadbalancer-dls:latest
+    build:
+      context: .
+      dockerfile: LoadBalancer/Dockerfile
+    ports:
+      - 9082:80
