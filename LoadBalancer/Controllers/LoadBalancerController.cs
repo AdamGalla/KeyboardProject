@@ -4,6 +4,7 @@ using System.Diagnostics;
 namespace LoadBalancer.Controllers;
 [Route("api/[controller]")]
 [ApiController]
+[ApiExplorerSettings(IgnoreApi = true)]
 public class LoadBalancerController : ControllerBase
 {
     private readonly ILoadBalancer _loadBalancer;

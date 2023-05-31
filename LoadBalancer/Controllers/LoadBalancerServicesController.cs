@@ -15,11 +15,11 @@ public class LoadBalancerServicesController : ControllerBase
     }
 
     [HttpPost("RegisterService")]
-    public IActionResult RegisterService([FromBody] string url)
+    public IActionResult RegisterService([FromBody] Service service)
     {
-        Console.WriteLine($"Adding Service to pool {url}");
+        Console.WriteLine($"Adding Service to pool {service.Url}");
 
-        Guid returnedId = _loadBalancer.AddService(url);
+        Guid returnedId = _loadBalancer.AddService(service.Url);
         Console.WriteLine($"Registered Service Id: {returnedId}");
         return Ok(returnedId);
     }

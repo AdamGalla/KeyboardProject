@@ -1,12 +1,13 @@
+using LoadBalancer;
 using LoadBalancer.Strategies;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-var loadBalancer = new LoadBalancer.LoadBalancer();
+var loadBalancer = new LoadBalancer.LoadBalancer() as ILoadBalancer;
 loadBalancer.SetActiveStrategy(new RoundRobinStrategy());
-builder.Services.AddSingleton(lb => loadBalancer);
+builder.Services.AddSingleton<ILoadBalancer>(lb => loadBalancer);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -16,7 +17,7 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+//if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();

@@ -7,7 +7,9 @@ services:
       context: .
       dockerfile: KeyboardAPI/Dockerfile
     deploy:
-        replicas: 2
+      replicas: 1
+    depends_on:
+      - keyboards-loadbalancer
 
   userapi:
     image: ${DOCKER_REGISTRY-}userapi
@@ -15,14 +17,22 @@ services:
       context: .
       dockerfile: UserAPI/Dockerfile
     deploy:
-        replicas: 2
+      replicas: 1
+    depends_on:
+      - users-loadbalancer
 
-  loadbalancer:
+  users-loadbalancer:
     image: ${DOCKER_REGISTRY-}loadbalancer
     build:
       context: .
       dockerfile: LoadBalancer/Dockerfile
-    deploy:
-        replicas: 2
     ports:
-      - 9080-9081:80
+      - 9080:80
+
+  keyboards-loadbalancer:
+    image: ${DOCKER_REGISTRY-}loadbalancer
+    build:
+      context: .
+      dockerfile: LoadBalancer/Dockerfile
+    ports:
+      - 9082:80
