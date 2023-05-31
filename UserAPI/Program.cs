@@ -1,8 +1,15 @@
 using Microsoft.EntityFrameworkCore;
+using RestSharp;
 using UserAPI.Data;
 using UserAPI.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Register the service to the loadbalancer
+Console.WriteLine("Hostname: " + Environment.MachineName);
+var client = new RestClient("http://loadbalancer:9080");
+var request = new RestRequest("LoadBalancerServices/RegisterService", Method.Post).AddJsonBody(new { Url = Environment.MachineName });
+_ = await client.ExecuteAsync(request);
 
 builder.Services.AddDbContext<UserApiContext>(opt => opt.UseInMemoryDatabase("UsersDb"));
 // Add services to the container.
