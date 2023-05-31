@@ -8,9 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Register the service to the loadbalancer
 Console.WriteLine("Hostname: " + Environment.MachineName);
-var client = new RestClient("http://loadbalancer:9081");
-var request = new RestRequest("LoadBalancerServices/RegisterService", Method.Post).AddJsonBody(new { Url = Environment.MachineName });
-_ = await client.ExecuteAsync(request);
+var client = new RestClient("http://keyboards-loadbalancer");
+var request = new RestRequest("api/LoadBalancerServices/RegisterService", Method.Post).AddJsonBody(new { Url = Environment.MachineName });
+var result = await client.ExecuteAsync(request);
+
+string error = result.ErrorMessage ?? "None";
+Console.WriteLine($"Posted registration: {result.IsSuccessful}; Errors: {error}");
 
 // Add services to the container.
 //Register ApiClient for dependency injection
@@ -37,7 +40,7 @@ app.UseCors(options =>
 });
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+//if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
