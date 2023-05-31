@@ -2,8 +2,15 @@ using KeyboardAPI.ApiClient;
 using KeyboardAPI.Data;
 using KeyboardAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using RestSharp;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Register the service to the loadbalancer
+Console.WriteLine("Hostname: " + Environment.MachineName);
+var client = new RestClient("http://loadbalancer:9081");
+var request = new RestRequest("LoadBalancerServices/RegisterService", Method.Post).AddJsonBody(new { Url = Environment.MachineName });
+_ = await client.ExecuteAsync(request);
 
 // Add services to the container.
 //Register ApiClient for dependency injection
