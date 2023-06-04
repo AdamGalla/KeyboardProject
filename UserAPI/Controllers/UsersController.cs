@@ -43,7 +43,7 @@ public class UsersController : ControllerBase
         else
         {
             // do old, boring stuff
-            return NotFound("This feature is not fully implemented yet!");
+            return StatusCode(501, "This feature is not implemented!");
         }
     }
 
