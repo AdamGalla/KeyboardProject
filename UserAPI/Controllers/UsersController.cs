@@ -38,7 +38,7 @@ public class UsersController : ControllerBase
         if (_unleash.IsEnabled("LogIn"))
         {
             // do new, flashy thing
-            return Ok();
+            return Ok(_userRepository.LogIn(username));
         }
         else
         {
