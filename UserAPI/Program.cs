@@ -6,21 +6,23 @@ using Unleash;
 using System.Collections;
 
 var builder = WebApplication.CreateBuilder(args);
+
 //Register unleash client
+string? apiKeyProd = builder.Configuration["unleash-api-key-production"];
+
 var settings = new UnleashSettings()
 {
     AppName = "keyboard-project",
     UnleashApi = new Uri("http://localhost:4242/api/"),
     CustomHttpHeaders = new Dictionary<string, string>()
     {
-      {"Authorization","default:development.unleash-insecure-api-token" }
+      {"Authorization", apiKeyProd}
     }
 };
 
 var unleash = new DefaultUnleash(settings);
 
 // Add to Container as Singleton
-// .NET Core 3/.NET 5/...
 builder.Services.AddSingleton<IUnleash>(c => unleash);
 
 Console.WriteLine("Hostname: " + Environment.MachineName);
