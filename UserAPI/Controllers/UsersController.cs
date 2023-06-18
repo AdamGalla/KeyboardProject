@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Unleash;
 using UserAPI.Data;
 using UserAPI.Models;
 
@@ -9,10 +10,12 @@ namespace UserAPI.Controllers;
 public class UsersController : ControllerBase
 {
     private readonly IRepository<User> _userRepository;
+    private readonly IUnleash _unleash;
 
-    public UsersController(IRepository<User> userRepository)
+    public UsersController(IRepository<User> userRepository, IUnleash unleash)
     {
         _userRepository = userRepository;
+        _unleash = unleash;
     }
 
     // GET: api/<UsersController>
@@ -27,6 +30,21 @@ public class UsersController : ControllerBase
     public ActionResult<User> Get(int id)
     {
         return Ok(_userRepository.Get(id));
+    }
+
+    [HttpGet("logIn/{username}")]
+    public ActionResult<User> SimpleLogIn(string username)
+    {
+        if (_unleash.IsEnabled("LogIn"))
+        {
+            // do new, flashy thing
+            return Ok(_userRepository.LogIn(username));
+        }
+        else
+        {
+            // do old, boring stuff
+            return StatusCode(501, "This feature is not implemented!");
+        }
     }
 
     // POST api/<UsersController>

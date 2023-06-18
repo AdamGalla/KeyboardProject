@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile: KeyboardAPI/Dockerfile
     deploy:
-      replicas: 1
+      replicas: 2
     depends_on:
       - keyboards-loadbalancer
 
@@ -17,7 +17,7 @@ services:
       context: .
       dockerfile: UserAPI/Dockerfile
     deploy:
-      replicas: 1
+      replicas: 2
     depends_on:
       - users-loadbalancer
 

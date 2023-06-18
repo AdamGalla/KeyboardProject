@@ -31,6 +31,11 @@ public class UserRepository : IRepository<User>
         return db.Users.FirstOrDefault(p => p.Id == id)!;
     }
 
+    User IRepository<User>.LogIn(string name)
+    {
+        return db.Users.FirstOrDefault(p => p.Name == name)!;
+    }
+
     IEnumerable<User> IRepository<User>.GetAll()
     {
         return db.Users.ToList();
