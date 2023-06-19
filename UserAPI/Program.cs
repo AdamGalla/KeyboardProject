@@ -2,8 +2,28 @@ using Microsoft.EntityFrameworkCore;
 using RestSharp;
 using UserAPI.Data;
 using UserAPI.Models;
+using Unleash;
+using System.Collections;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//Register unleash client
+string? apiKeyProd = builder.Configuration["unleash-api-key-production"];
+
+var settings = new UnleashSettings()
+{
+    AppName = "keyboard-project",
+    UnleashApi = new Uri("http://localhost:4242/api/"),
+    CustomHttpHeaders = new Dictionary<string, string>()
+    {
+      {"Authorization", apiKeyProd}
+    }
+};
+
+var unleash = new DefaultUnleash(settings);
+
+// Add to Container as Singleton
+builder.Services.AddSingleton<IUnleash>(c => unleash);
 
 Console.WriteLine("Hostname: " + Environment.MachineName);
 var client = new RestClient("http://users-loadbalancer");
